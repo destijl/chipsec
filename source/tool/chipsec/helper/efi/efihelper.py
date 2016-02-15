@@ -56,6 +56,7 @@ status_dict = { 0:"EFI_SUCCESS", 1:"EFI_LOAD_ERROR", 2:"EFI_INVALID_PARAMETER", 
 class EfiHelper(Helper):
 
     def __init__(self):
+        self.driver_loaded = True
         if sys.platform.startswith('EFI'):
             self.os_system = sys.platform
             self.os_release = "0.0"
@@ -79,7 +80,7 @@ class EfiHelper(Helper):
 # Driver/service management functions
 ###############################################################################################
 
-    def create( self ):
+    def create( self, start_svc ):
         if logger().VERBOSE:
             logger().log("[helper] UEFI Helper created")
 
