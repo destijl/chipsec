@@ -32,6 +32,7 @@ import time
 
 from chipsec.hal.acpi   import *
 from chipsec.command    import BaseCommand
+from chipsec.helper.oshelper import helper
 
 # ###################################################################
 #
@@ -52,7 +53,7 @@ class ACPICommand(BaseCommand):
     """
 
     def requires_driver(self):
-        if len(self.argv) < 1:
+        if len(self.argv) < 1 or helper().is_linux():
             return False
         return True
 
