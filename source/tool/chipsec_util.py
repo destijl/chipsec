@@ -40,7 +40,6 @@ from chipsec.file       import *
 from chipsec.helper.oshelper   import helper
 
 from chipsec.chipset import cs, UnknownChipsetError
-_cs = cs()
 
 #
 # If you want to turn verbose logging change this line to True
@@ -129,7 +128,7 @@ class ChipsecUtil:
         """
         Receives and executes the commands
         """
-        global _cs
+        _cs = cs()
         #import traceback
         if self.CHIPSEC_LOADED_AS_EXE:
             import zipfile
