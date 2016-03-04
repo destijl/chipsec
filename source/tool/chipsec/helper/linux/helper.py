@@ -179,19 +179,33 @@ class LinuxHelper(Helper):
 
     def __mem_block(self, sz, newval = None):
         if(newval == None):
-            return self.dev_fh.read(sz)
+            if self.driver_loaded:
+                return self.dev_fh.read(sz)
+            else:
+                return os.read(self.dev_mem, sz)
         else:
-            self.dev_fh.write(newval)
-            self.dev_fh.flush()
+            if self.driver_loaded:
+                self.dev_fh.write(newval)
+                self.dev_fh.flush()
+            else:
+                os.write(self.dev_mem, newval)
         return 1
 
 
     def mem_read_block(self, addr, sz):
-        if(addr != None): self.dev_fh.seek(addr)
+        if (addr != None):
+            if self.driver_loaded:
+                self.dev_fh.seek(addr)
+            else:
+                os.lseek(self.dev_mem, addr, os.SEEK_SET)
         return self.__mem_block(sz)
 
     def mem_write_block(self, addr, sz, newval):
-        if(addr != None): self.dev_fh.seek(addr)
+        if(addr != None):
+            if self.driver_loaded:
+                self.dev_fh.seek(addr)
+            else:
+                os.lseek(self.dev_mem, addr, os.SEEK_SET)
         return self.__mem_block(sz, newval)
 
     def write_phys_mem(self, phys_address_hi, phys_address_lo, sz, newval):
